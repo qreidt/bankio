@@ -2,13 +2,15 @@ use Mix.Config
 
 # Configure your database
 config :bankio,
-       App.Repo,
-       username: "bankio",
-       password: "bankio",
-       database: "bankio",
-       hostname: "localhost",
-       show_sensitive_data_on_connection_error: true,
-       pool_size: 10
+      App.Repo,
+      username: "bankio",
+      password: "bankio",
+      database: "bankio",
+      hostname: "localhost",
+      show_sensitive_data_on_connection_error: true,
+      pool_size: 10,
+      charset: "utf8mb4",
+      collate: "utf8mb4_unicode_ci"
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
