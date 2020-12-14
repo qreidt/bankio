@@ -27,10 +27,50 @@ defmodule AppWeb.AuthController do
 
   end
 
+  def client_login(conn, params) do
+
+    %{
+      "key" => key,
+      "password" => password
+    } = params
+
+    case Accounts.login(:client, key, password) do
+
+      {:ok, client, token} ->
+        conn
+        |> put_status(:ok)
+        |> render("client-token.json", client: client, token: token)
+
+      {:error, _reason} ->
+        conn
+        |> put_status(401)
+        |> put_view(AppWeb.ErrorView)
+        |> render("401.json", message: "Key and Password Combination don't match")
+
+    end
+
+  end
+
 
   def user_logout(conn, _) do
 
     case Accounts.logout(:user, conn) do
+
+      {:ok, _} ->
+        conn
+        |> send_resp(204, "")
+
+      {:error, reason} ->
+        conn
+        |> send_resp(400, reason)
+
+    end
+
+  end
+
+  def client_logout(conn, _) do
+
+    case Accounts.logout(:client, conn) do
 
       {:ok, _} ->
         conn

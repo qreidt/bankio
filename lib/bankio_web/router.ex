@@ -5,13 +5,17 @@ defmodule AppWeb.Router do
 		plug :accepts, ["json"]
 	end
 
-	pipeline :authenticated do
-		plug AppWeb.Plugs.Authenticate
+	pipeline :authenticated_user do
+		plug AppWeb.Plugs.AuthenticatedUser
+	end
+
+	pipeline :authenticated_client do
+		plug AppWeb.Plugs.AuthenticatedClient
 	end
 
 	scope "/", AppWeb do
 		pipe_through :api
-		pipe_through :authenticated
+		pipe_through :authenticated_client
 
 		get "/hello", HelloController, :hello
 	end
@@ -21,5 +25,12 @@ defmodule AppWeb.Router do
 
 		post "/login", AuthController, :user_login
 		delete "/logout", AuthController, :user_logout
+	end
+
+	scope "/client", AppWeb do
+		pipe_through :api
+
+		post "/login", AuthController, :client_login
+		delete "/logout", AuthController, :client_logout
 	end
 end

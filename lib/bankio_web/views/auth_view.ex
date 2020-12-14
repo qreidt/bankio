@@ -7,4 +7,11 @@ defmodule AppWeb.AuthView do
       user: render(AppWeb.UserView, "show.json", user: user)
     }
   end
+
+  def render("client-token.json", %{token: token, client: client}) do
+    %{
+      token: token,
+      client: render(AppWeb.ClientView, "show.json", client: client)
+    }
+  end
 end

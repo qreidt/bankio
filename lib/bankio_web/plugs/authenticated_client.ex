@@ -1,4 +1,4 @@
-defmodule AppWeb.Plugs.Authenticate do
+defmodule AppWeb.Plugs.AuthenticatedClient do
 
   import Plug.Conn
   import Phoenix.Controller
@@ -6,11 +6,11 @@ defmodule AppWeb.Plugs.Authenticate do
   def init(default), do: default
 
   def call(conn, _default) do
-    case App.Services.Authenticator.get_token("user", conn) do
+    case App.Services.Authenticator.get_token("client", conn) do
 
       {:ok, token} ->
 
-        user_token = App.Repo.get_by(App.Accounts.UserToken, [id: token, revoked: false])
+        user_token = App.Repo.get_by(App.Accounts.ClientToken, [id: token, revoked: false])
         |> App.Repo.preload(:user)
 
         case user_token do
