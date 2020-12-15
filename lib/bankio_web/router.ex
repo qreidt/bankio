@@ -19,6 +19,7 @@ defmodule AppWeb.Router do
 
 		resources "/user", UserController, except: [:new, :edit]
 		resources "/client", ClientController, except: [:new, :edit]
+		resources "/companies", CompanyController, except: [:new, :edit]
 	end
 
 	scope "/hello", AppWeb do
