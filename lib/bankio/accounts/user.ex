@@ -15,6 +15,7 @@ defmodule App.Accounts.User do
   schema "users" do
     field :is_active, :boolean, default: false
     field :key, :string
+    field :name, :string
     field :password, :string
     field :type, :integer
 
@@ -26,7 +27,7 @@ defmodule App.Accounts.User do
   def types, do: @types
 
   def verify_password(key, password) do
-    
+
     Repo.get_by(App.Accounts.User, key: key)
     |> Bcrypt.check_pass(password, hash_key: :password)
 
@@ -35,11 +36,19 @@ defmodule App.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:key, :password, :type, :is_active])
-    |> validate_required([:key, :password, :type, :is_active])
+    |> cast(attrs, [:key, :name, :password, :type, :is_active])
+    |> validate_required([:key, :name, :password, :type, :is_active])
     |> validate_password
     |> unique_constraint(:key)
     |> put_password_hash
+  end
+
+  @doc false
+  def update_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:key, :name, :type, :is_active])
+    |> validate_required([:key, :name, :type, :is_active])
+    |> unique_constraint(:key)
   end
 
   defp validate_password(changeset) do

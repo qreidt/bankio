@@ -13,6 +13,7 @@
 # Seed USER Admin
 App.Accounts.create_user(%{
   key: "qreidt",
+  name: "Caio Reidt",
   password: "Ab1234567890",
   type: App.Accounts.User.types[:administrator],
   is_active: true
@@ -21,8 +22,8 @@ App.Accounts.create_user(%{
 
 # Seed Client User
 App.Accounts.create_client(%{
-  key: "qreidt",
-  name: "Caio Reidt",
+  key: "000.000.000-00",
+  name: "Caio Quincoses Reidt",
   password: "Ab1234567890",
   is_active: true
 })

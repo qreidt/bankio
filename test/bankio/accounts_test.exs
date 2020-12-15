@@ -6,9 +6,9 @@ defmodule App.AccountsTest do
   describe "users" do
     alias App.Accounts.User
 
-    @valid_attrs %{is_active: true, key: "some key", password: "some password", type: 42}
-    @update_attrs %{is_active: false, key: "some updated key", password: "some updated password", type: 43}
-    @invalid_attrs %{is_active: nil, key: nil, password: nil, type: nil}
+    @valid_attrs %{is_active: true, key: "some key", name: "some name", password: "some password", type: 1}
+    @update_attrs %{is_active: false, key: "some updated key", name: "some updated name", password: "some updated password", type: 2}
+    @invalid_attrs %{is_active: nil, key: nil, name: nil, password: nil, type: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -33,8 +33,9 @@ defmodule App.AccountsTest do
       assert {:ok, %User{} = user} = Accounts.create_user(@valid_attrs)
       assert user.is_active == true
       assert user.key == "some key"
+      assert user.name == "some name"
       assert user.password == "some password"
-      assert user.type == 42
+      assert user.type == 1
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -46,8 +47,9 @@ defmodule App.AccountsTest do
       assert {:ok, %User{} = user} = Accounts.update_user(user, @update_attrs)
       assert user.is_active == false
       assert user.key == "some updated key"
+      assert user.name == "some updated name"
       assert user.password == "some updated password"
-      assert user.type == 43
+      assert user.type == 2
     end
 
     test "update_user/2 with invalid data returns error changeset" do
@@ -71,9 +73,9 @@ defmodule App.AccountsTest do
   describe "clients" do
     alias App.Accounts.Client
 
-    @valid_attrs %{is_active: true, key: "some key", name: "some name", password: "some password"}
-    @update_attrs %{is_active: false, key: "some updated key", name: "some updated name", password: "some updated password"}
-    @invalid_attrs %{is_active: nil, key: nil, name: nil, password: nil}
+    @valid_attrs %{is_active: true, key: "some key", name: "some name", name: "some name", password: "some password"}
+    @update_attrs %{is_active: false, key: "some updated key", name: "some updated name", name: "some updated name", password: "some updated password"}
+    @invalid_attrs %{is_active: nil, key: nil, name: nil, name: nil, password: nil}
 
     def client_fixture(attrs \\ %{}) do
       {:ok, client} =

@@ -35,6 +35,14 @@ defmodule App.Accounts.Client do
     |> put_password_hash
   end
 
+  @doc false
+  def update_changeset(client, attrs) do
+    client
+    |> cast(attrs, [:key, :name, :is_active])
+    |> validate_required([:key, :name, :is_active])
+    |> unique_constraint(:key)
+  end
+
   defp validate_password(changeset) do
     changeset
     |> validate_length(:password, min: 12, max: 80)

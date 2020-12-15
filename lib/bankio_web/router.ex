@@ -15,9 +15,17 @@ defmodule AppWeb.Router do
 
 	scope "/", AppWeb do
 		pipe_through :api
+		pipe_through :authenticated_user
+
+		resources "/user", UserController, except: [:new, :edit]
+		resources "/client", ClientController, except: [:new, :edit]
+	end
+
+	scope "/hello", AppWeb do
+		pipe_through :api
 		pipe_through :authenticated_client
 
-		get "/hello", HelloController, :hello
+		get "/", HelloController, :hello
 	end
 
 	scope "/user", AppWeb do
