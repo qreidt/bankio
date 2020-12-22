@@ -17,9 +17,15 @@ defmodule AppWeb.Router do
 		pipe_through :api
 		pipe_through :authenticated_user
 
-		resources "/user", UserController, except: [:new, :edit]
-		resources "/client", ClientController, except: [:new, :edit]
+		resources "/users", UserController, except: [:new, :edit]
+		resources "/clients", ClientController, except: [:new, :edit]
 		resources "/companies", CompanyController, except: [:new, :edit]
+
+		# RECURO PARA CLIENTES DE EMPRESAS
+		post "/company-clients", CompanyClientController, :create
+		patch "/company-clients/:company_id/:client_id", CompanyClientController, :update
+		delete "/company-clients/:company_id/:client_id", CompanyClientController, :delete
+
 	end
 
 	scope "/hello", AppWeb do

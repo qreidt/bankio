@@ -10,7 +10,7 @@ defmodule App.Repo.Migrations.CreateUsers do
       add :type, :integer, null: false
       add :is_active, :boolean, default: false, null: false
 
-      timestamps()
+      timestamps type: :utc_datetime
     end
 
     create unique_index(:users, [:key])

@@ -11,8 +11,8 @@ defmodule AppWeb.CompanyController do
     render(conn, "index.json", companies: companies)
   end
 
-  def create(conn, %{"company" => company_params}) do
-    with {:ok, %Company{} = company} <- Companies.create_company(company_params) do
+  def create(conn, params) do
+    with {:ok, %Company{} = company} <- Companies.create_company(params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.company_path(conn, :show, company))
@@ -21,14 +21,14 @@ defmodule AppWeb.CompanyController do
   end
 
   def show(conn, %{"id" => id}) do
-    company = Companies.get_company!(id)
+    company = Companies.get_company_with_members!(id)
     render(conn, "show.json", company: company)
   end
 
-  def update(conn, %{"id" => id, "company" => company_params}) do
+  def update(conn, %{"id" => id} = params) do
     company = Companies.get_company!(id)
 
-    with {:ok, %Company{} = company} <- Companies.update_company(company, company_params) do
+    with {:ok, %Company{} = company} <- Companies.update_company(company, params) do
       render(conn, "show.json", company: company)
     end
   end

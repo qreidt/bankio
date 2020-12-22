@@ -9,7 +9,7 @@ defmodule App.Repo.Migrations.CreateClients do
       add :password, :string, null: false
       add :is_active, :boolean, default: false, null: false
 
-      timestamps()
+      timestamps type: :utc_datetime
     end
 
     create unique_index(:clients, [:key])

@@ -8,7 +8,7 @@ defmodule App.Repo.Migrations.CreateCompanies do
       add :document, :string, null: false
       add :is_active, :boolean, default: false, null: false
 
-      timestamps()
+      timestamps type: :utc_datetime
     end
 
   end

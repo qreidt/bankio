@@ -65,4 +65,65 @@ defmodule App.CompaniesTest do
       assert %Ecto.Changeset{} = Companies.change_company(company)
     end
   end
+
+  describe "company_clients" do
+    alias App.Companies.CompanyClient
+
+    @valid_attrs %{since: "2010-04-17T14:00:00Z", until: "2010-04-17T14:00:00Z"}
+    @update_attrs %{since: "2011-05-18T15:01:01Z", until: "2011-05-18T15:01:01Z"}
+    @invalid_attrs %{since: nil, until: nil}
+
+    def company_client_fixture(attrs \\ %{}) do
+      {:ok, company_client} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Companies.create_company_client()
+
+      company_client
+    end
+
+    test "list_company_clients/0 returns all company_clients" do
+      company_client = company_client_fixture()
+      assert Companies.list_company_clients() == [company_client]
+    end
+
+    test "get_company_client!/1 returns the company_client with given id" do
+      company_client = company_client_fixture()
+      assert Companies.get_company_client!(company_client.id) == company_client
+    end
+
+    test "create_company_client/1 with valid data creates a company_client" do
+      assert {:ok, %CompanyClient{} = company_client} = Companies.create_company_client(@valid_attrs)
+      assert company_client.since == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+      assert company_client.until == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+    end
+
+    test "create_company_client/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Companies.create_company_client(@invalid_attrs)
+    end
+
+    test "update_company_client/2 with valid data updates the company_client" do
+      company_client = company_client_fixture()
+      assert {:ok, %CompanyClient{} = company_client} = Companies.update_company_client(company_client, @update_attrs)
+      assert company_client.since == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+      assert company_client.until == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+    end
+
+    test "update_company_client/2 with invalid data returns error changeset" do
+      company_client = company_client_fixture()
+      assert {:error, %Ecto.Changeset{}} = Companies.update_company_client(company_client, @invalid_attrs)
+      assert company_client == Companies.get_company_client!(company_client.id)
+    end
+
+    test "delete_company_client/1 deletes the company_client" do
+      company_client = company_client_fixture()
+      assert {:ok, %CompanyClient{}} = Companies.delete_company_client(company_client)
+      assert_raise Ecto.NoResultsError, fn -> Companies.get_company_client!(company_client.id) end
+    end
+
+    test "change_company_client/1 returns a company_client changeset" do
+      company_client = company_client_fixture()
+      assert %Ecto.Changeset{} = Companies.change_company_client(company_client)
+    end
+  end
 end

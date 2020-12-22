@@ -5,6 +5,7 @@ defmodule App.Accounts do
 
   import Ecto.Query, warn: false
 
+  alias App.Accounts
   alias App.Accounts.{User, Client}
 
   alias App.Repo
@@ -133,6 +134,19 @@ defmodule App.Accounts do
 
   """
   def get_client!(id), do: Repo.get!(Client, id)
+  def get_client!(id, relations) do
+    base_query = from client in Client, where: client.id == ^id
+
+    Accounts.preload_companies(base_query)
+    |> Repo.one!
+  end
+
+  def preload_companies(query) do
+    from client in query,
+      join: c in assoc(client, :companies),
+      join: company in assoc(c, :company),
+      preload: [companies: {c, company: company}]
+  end
 
   @doc """
   Creates a client.

@@ -5,9 +5,17 @@ defmodule App.Companies.Company do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "companies" do
+    field :name, :string
     field :document, :string
     field :is_active, :boolean, default: false
-    field :name, :string
+
+    has_many :members, App.Companies.CompanyClient, foreign_key: :company_id
+    # many_to_many(
+    #   :members,
+    #   App.Accounts.Client,
+    #   join_through: "company_clients",
+    #   join_keys: [company_id: :id, client_id: :id]
+    # )
 
     timestamps()
   end

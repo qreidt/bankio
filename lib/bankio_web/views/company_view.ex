@@ -2,6 +2,30 @@ defmodule AppWeb.CompanyView do
   use AppWeb, :view
   alias AppWeb.CompanyView
 
+  def company(company) do
+    %{
+      id: company.id,
+      name: company.name,
+      document: company.document,
+      is_active: company.is_active
+    }
+  end
+
+  def members(company, company_members) do
+    if is_list(company_members) do
+      Map.put(
+        company,
+        :members,
+        render_many(company_members, AppWeb.CompanyClientView, "company_client.json")
+      )
+
+    else
+
+      company
+
+    end
+  end
+
   def render("index.json", %{companies: companies}) do
     render_many(companies, CompanyView, "company.json")
   end
@@ -11,11 +35,7 @@ defmodule AppWeb.CompanyView do
   end
 
   def render("company.json", %{company: company}) do
-    %{
-      id: company.id,
-      name: company.name,
-      document: company.document,
-      is_active: company.is_active
-    }
+    company(company)
+    |> members(company.members)
   end
 end

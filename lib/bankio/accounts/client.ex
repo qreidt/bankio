@@ -14,6 +14,7 @@ defmodule App.Accounts.Client do
     field :is_active, :boolean, default: false
 
     has_many :tokens, App.Accounts.ClientToken
+    has_many :companies, App.Companies.CompanyClient
 
     timestamps()
   end

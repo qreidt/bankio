@@ -11,7 +11,7 @@
 # and so on) as they will fail if something goes wrong.
 
 # Seed USER Admin
-App.Accounts.create_user(%{
+{:ok, %App.Accounts.User{id: _user_id}} = App.Accounts.create_user(%{
   key: "qreidt",
   name: "Caio Reidt",
   password: "Ab1234567890",
@@ -21,9 +21,25 @@ App.Accounts.create_user(%{
 
 
 # Seed Client User
-App.Accounts.create_client(%{
-  key: "000.000.000-00",
+{:ok, %App.Accounts.Client{id: client_id}} = App.Accounts.create_client(%{
+  key: "461.700.428-93",
   name: "Caio Quincoses Reidt",
   password: "Ab1234567890",
   is_active: true
+})
+
+
+# Seed Company
+{:ok, %App.Companies.Company{id: company_id}} = App.Companies.create_company(%{
+  name: "Garnon Soluções e Serviços Em Tecnologia Ltda.",
+  document: "26.003.654/0001-62",
+  is_active: true
+})
+
+# Seed Company Client
+App.Companies.create_company_client(%{
+  company_id: company_id,
+  client_id: client_id,
+  since: DateTime.utc_now,
+  until: nil
 })
