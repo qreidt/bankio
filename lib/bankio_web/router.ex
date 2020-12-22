@@ -26,6 +26,8 @@ defmodule AppWeb.Router do
 		patch "/company-clients/:company_id/:client_id", CompanyClientController, :update
 		delete "/company-clients/:company_id/:client_id", CompanyClientController, :delete
 
+		resources "/agencies", AgencyController, except: [:new, :edit]
+
 	end
 
 	scope "/hello", AppWeb do

@@ -43,3 +43,11 @@ App.Companies.create_company_client(%{
   since: DateTime.utc_now,
   until: nil
 })
+
+
+# Seed Agency
+{:ok, %App.Agencies.Agency{id: agency_id}} = App.Agencies.create_agency(%{
+  code: 1,
+  name: "Agência 0001",
+  is_active: true
+})
