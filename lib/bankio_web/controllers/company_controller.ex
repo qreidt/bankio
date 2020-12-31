@@ -21,7 +21,7 @@ defmodule AppWeb.CompanyController do
   end
 
   def show(conn, %{"id" => id}) do
-    company = Companies.get_company_with_members!(id)
+    company = Companies.get_company!(id, :complete)
     render(conn, "show.json", company: company)
   end
 

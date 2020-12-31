@@ -21,7 +21,7 @@ defmodule AppWeb.AgencyController do
   end
 
   def show(conn, %{"id" => id}) do
-    agency = Agencies.get_agency!(id)
+    agency = Agencies.get_agency!(id, :complete)
     render(conn, "show.json", agency: agency)
   end
 

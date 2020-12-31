@@ -6,6 +6,7 @@ defmodule App.Companies do
   import Ecto.Query, warn: false
   alias App.Repo
 
+  alias App.Companies
   alias App.Companies.{Company, CompanyClient}
 
   @doc """
@@ -36,19 +37,19 @@ defmodule App.Companies do
 
   """
   def get_company!(id), do: Repo.get!(Company, id)
-  def get_company!(id, relations) do
-    Repo.get!(Company, id)
-    |> Repo.preload(relations)
+  def get_company!(id, :complete) do
+    base_query = from company in Company, where: company.id == ^id
+
+    base_query
+    |> Companies.preload_clients
+    |> Repo.one!
   end
 
-  def get_company_with_members!(id) do
-    Repo.one!(
-      from company in Company,
-      where: company.id == ^id,
-      join: member in assoc(company, :members),
-      join: client in assoc(member, :client),
+  def preload_clients(query) do
+    from company in query,
+      left_join: member in assoc(company, :members),
+      left_join: client in assoc(member, :client),
       preload: [members: {member, client: client}]
-    )
   end
 
   @doc """
@@ -185,8 +186,6 @@ defmodule App.Companies do
 
   """
   def delete_company_client(%CompanyClient{} = company_client) do
-    company_client
-    |> CompanyClient.changeset(%{until: Time.utc_now})
-    |> Repo.update()
+    Repo.delete(company_client)
   end
 end

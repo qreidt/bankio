@@ -21,7 +21,7 @@ defmodule AppWeb.ClientController do
   end
 
   def show(conn, %{"id" => id}) do
-    client = Accounts.get_client!(id, [:companies])
+    client = Accounts.get_client!(id, :complete)
     render(conn, "show.json", client: client)
   end
 

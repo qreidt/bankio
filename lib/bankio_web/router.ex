@@ -19,22 +19,23 @@ defmodule AppWeb.Router do
 
 		resources "/users", UserController, except: [:new, :edit]
 		resources "/clients", ClientController, except: [:new, :edit]
+
+
 		resources "/companies", CompanyController, except: [:new, :edit]
 
-		# RECURO PARA CLIENTES DE EMPRESAS
+		# Recurso para Clientes de Empresas
 		post "/company-clients", CompanyClientController, :create
 		patch "/company-clients/:company_id/:client_id", CompanyClientController, :update
 		delete "/company-clients/:company_id/:client_id", CompanyClientController, :delete
 
+
 		resources "/agencies", AgencyController, except: [:new, :edit]
 
-	end
+		# Recurso para Usuários de Agencias
+		post "/agency-users", AgencyUserController, :create
+		patch "/agency-users/:agency_id/:user_id", AgencyUserController, :update
+		delete "/agency-users/:agency_id/:user_id", AgencyUserController, :delete
 
-	scope "/hello", AppWeb do
-		pipe_through :api
-		pipe_through :authenticated_client
-
-		get "/", HelloController, :hello
 	end
 
 	scope "/user", AppWeb do

@@ -9,6 +9,8 @@ defmodule App.Agencies.Agency do
     field :is_active, :boolean, default: false
     field :name, :string
 
+    has_many :users, App.Agencies.AgencyUser
+
     timestamps()
   end
 

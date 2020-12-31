@@ -2,6 +2,30 @@ defmodule AppWeb.AgencyView do
   use AppWeb, :view
   alias AppWeb.AgencyView
 
+  def agency(agency) do
+    %{
+      id: agency.id,
+      code: agency.code,
+      name: agency.name,
+      is_active: agency.is_active
+    }
+  end
+
+  def members(agency, agency_users) do
+    if is_list(agency_users) do
+      Map.put(
+        agency,
+        :users,
+        render_many(agency_users, AppWeb.AgencyUserView, "agency-user.json")
+      )
+
+    else
+
+      agency
+
+    end
+  end
+
   def render("index.json", %{agencies: agencies}) do
     render_many(agencies, AgencyView, "agency.json")
   end
@@ -11,11 +35,8 @@ defmodule AppWeb.AgencyView do
   end
 
   def render("agency.json", %{agency: agency}) do
-    %{
-      id: agency.id,
-      code: agency.code,
-      name: agency.name,
-      is_active: agency.is_active
-    }
+    agency
+    |> AgencyView.agency
+    |> AgencyView.members(agency.users)
   end
 end

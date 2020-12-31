@@ -13,7 +13,7 @@ defmodule App.Companies.CompanyClient do
     belongs_to :company, App.Companies.Company, define_field: false
     belongs_to :client, App.Accounts.Client, define_field: false
 
-    timestamps
+    timestamps()
   end
 
   @doc false

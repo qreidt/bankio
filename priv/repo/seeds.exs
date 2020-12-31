@@ -10,8 +10,8 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-# Seed USER Admin
-{:ok, %App.Accounts.User{id: _user_id}} = App.Accounts.create_user(%{
+# Seed Admin User
+{:ok, %App.Accounts.User{id: user_id}} = App.Accounts.create_user(%{
   key: "qreidt",
   name: "Caio Reidt",
   password: "Ab1234567890",
@@ -20,29 +20,29 @@
 })
 
 
-# Seed Client User
-{:ok, %App.Accounts.Client{id: client_id}} = App.Accounts.create_client(%{
-  key: "461.700.428-93",
-  name: "Caio Quincoses Reidt",
-  password: "Ab1234567890",
-  is_active: true
-})
-
-
-# Seed Company
-{:ok, %App.Companies.Company{id: company_id}} = App.Companies.create_company(%{
-  name: "Garnon Soluções e Serviços Em Tecnologia Ltda.",
-  document: "26.003.654/0001-62",
-  is_active: true
-})
-
-# Seed Company Client
-App.Companies.create_company_client(%{
-  company_id: company_id,
-  client_id: client_id,
-  since: DateTime.utc_now,
-  until: nil
-})
+# # Seed Client User
+# {:ok, %App.Accounts.Client{id: client_id}} = App.Accounts.create_client(%{
+#   key: "461.700.428-93",
+#   name: "Caio Quincoses Reidt",
+#   password: "Ab1234567890",
+#   is_active: true
+# })
+#
+#
+# # Seed Company
+# {:ok, %App.Companies.Company{id: company_id}} = App.Companies.create_company(%{
+#   name: "Garnon Soluções e Serviços Em Tecnologia Ltda.",
+#   document: "26.003.654/0001-62",
+#   is_active: true
+# })
+#
+# # Add Client to Company
+# App.Companies.create_company_client(%{
+#   company_id: company_id,
+#   client_id: client_id,
+#   since: DateTime.utc_now,
+#   until: nil
+# })
 
 
 # Seed Agency
@@ -50,4 +50,13 @@ App.Companies.create_company_client(%{
   code: 1,
   name: "Agência 0001",
   is_active: true
+})
+
+# Add User to Agency
+App.Agencies.create_agency_user(%{
+  user_id: user_id,
+  agency_id: agency_id,
+  role: "Gerente",
+  since: DateTime.utc_now,
+  until: nil
 })

@@ -20,6 +20,7 @@ defmodule App.Accounts.User do
     field :type, :integer
 
     has_many :tokens, App.Accounts.UserToken
+    has_many :agencies, App.Agencies.AgencyUser
 
     timestamps()
   end

@@ -65,4 +65,71 @@ defmodule App.AgenciesTest do
       assert %Ecto.Changeset{} = Agencies.change_agency(agency)
     end
   end
+
+  describe "agency_users" do
+    alias App.Agencies.AgencyUser
+
+    @valid_attrs %{agency_id: "some agency_id", role: "some role", since: "2010-04-17T14:00:00Z", until: "2010-04-17T14:00:00Z", user_id: "some user_id"}
+    @update_attrs %{agency_id: "some updated agency_id", role: "some updated role", since: "2011-05-18T15:01:01Z", until: "2011-05-18T15:01:01Z", user_id: "some updated user_id"}
+    @invalid_attrs %{agency_id: nil, role: nil, since: nil, until: nil, user_id: nil}
+
+    def agency_user_fixture(attrs \\ %{}) do
+      {:ok, agency_user} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Agencies.create_agency_user()
+
+      agency_user
+    end
+
+    test "list_agency_users/0 returns all agency_users" do
+      agency_user = agency_user_fixture()
+      assert Agencies.list_agency_users() == [agency_user]
+    end
+
+    test "get_agency_user!/1 returns the agency_user with given id" do
+      agency_user = agency_user_fixture()
+      assert Agencies.get_agency_user!(agency_user.id) == agency_user
+    end
+
+    test "create_agency_user/1 with valid data creates a agency_user" do
+      assert {:ok, %AgencyUser{} = agency_user} = Agencies.create_agency_user(@valid_attrs)
+      assert agency_user.agency_id == "some agency_id"
+      assert agency_user.role == "some role"
+      assert agency_user.since == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+      assert agency_user.until == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+      assert agency_user.user_id == "some user_id"
+    end
+
+    test "create_agency_user/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Agencies.create_agency_user(@invalid_attrs)
+    end
+
+    test "update_agency_user/2 with valid data updates the agency_user" do
+      agency_user = agency_user_fixture()
+      assert {:ok, %AgencyUser{} = agency_user} = Agencies.update_agency_user(agency_user, @update_attrs)
+      assert agency_user.agency_id == "some updated agency_id"
+      assert agency_user.role == "some updated role"
+      assert agency_user.since == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+      assert agency_user.until == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+      assert agency_user.user_id == "some updated user_id"
+    end
+
+    test "update_agency_user/2 with invalid data returns error changeset" do
+      agency_user = agency_user_fixture()
+      assert {:error, %Ecto.Changeset{}} = Agencies.update_agency_user(agency_user, @invalid_attrs)
+      assert agency_user == Agencies.get_agency_user!(agency_user.id)
+    end
+
+    test "delete_agency_user/1 deletes the agency_user" do
+      agency_user = agency_user_fixture()
+      assert {:ok, %AgencyUser{}} = Agencies.delete_agency_user(agency_user)
+      assert_raise Ecto.NoResultsError, fn -> Agencies.get_agency_user!(agency_user.id) end
+    end
+
+    test "change_agency_user/1 returns a agency_user changeset" do
+      agency_user = agency_user_fixture()
+      assert %Ecto.Changeset{} = Agencies.change_agency_user(agency_user)
+    end
+  end
 end
