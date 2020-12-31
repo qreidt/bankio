@@ -13,12 +13,27 @@ defmodule AppWeb.AgencyView do
     }
   end
 
-  def members(agency, agency_users) do
+  def users(agency, agency_users) do
     if is_list(agency_users) do
       Map.put(
         agency,
         :users,
         render_many(agency_users, AppWeb.AgencyUserView, "agency-user.json")
+      )
+
+    else
+
+      agency
+
+    end
+  end
+
+  def bank_accounts(agency, bank_accounts) do
+    if is_list(bank_accounts) do
+      Map.put(
+        agency,
+        :bank_accounts,
+        render_many(bank_accounts, AppWeb.BankAccountView, "bank_account.json")
       )
 
     else
@@ -39,6 +54,7 @@ defmodule AppWeb.AgencyView do
   def render("agency.json", %{agency: agency}) do
     agency
     |> AgencyView.agency
-    |> AgencyView.members(agency.users)
+    |> AgencyView.users(agency.users)
+    |> AgencyView.bank_accounts(agency.bank_accounts)
   end
 end

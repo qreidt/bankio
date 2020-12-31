@@ -10,6 +10,7 @@ defmodule App.Agencies.Agency do
     field :name, :string
 
     has_many :users, App.Agencies.AgencyUser
+    has_many :bank_accounts, App.Agencies.BankAccount
 
     timestamps()
   end

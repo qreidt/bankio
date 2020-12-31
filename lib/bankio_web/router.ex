@@ -36,6 +36,8 @@ defmodule AppWeb.Router do
 		patch "/agency-users/:agency_id/:user_id", AgencyUserController, :update
 		delete "/agency-users/:agency_id/:user_id", AgencyUserController, :delete
 
+		resources "/bank-accounts", BankAccountController, except: [:new, :edit]
+
 	end
 
 	scope "/user", AppWeb do

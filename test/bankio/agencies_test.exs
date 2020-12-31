@@ -132,4 +132,69 @@ defmodule App.AgenciesTest do
       assert %Ecto.Changeset{} = Agencies.change_agency_user(agency_user)
     end
   end
+
+  describe "bank_accounts" do
+    alias App.Agencies.BankAccount
+
+    @valid_attrs %{agency_id: "some agency_id", is_active: true, since: "2010-04-17T14:00:00Z", until: "2010-04-17T14:00:00Z"}
+    @update_attrs %{agency_id: "some updated agency_id", is_active: false, since: "2011-05-18T15:01:01Z", until: "2011-05-18T15:01:01Z"}
+    @invalid_attrs %{agency_id: nil, is_active: nil, since: nil, until: nil}
+
+    def bank_account_fixture(attrs \\ %{}) do
+      {:ok, bank_account} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Agencies.create_bank_account()
+
+      bank_account
+    end
+
+    test "list_bank_accounts/0 returns all bank_accounts" do
+      bank_account = bank_account_fixture()
+      assert Agencies.list_bank_accounts() == [bank_account]
+    end
+
+    test "get_bank_account!/1 returns the bank_account with given id" do
+      bank_account = bank_account_fixture()
+      assert Agencies.get_bank_account!(bank_account.id) == bank_account
+    end
+
+    test "create_bank_account/1 with valid data creates a bank_account" do
+      assert {:ok, %BankAccount{} = bank_account} = Agencies.create_bank_account(@valid_attrs)
+      assert bank_account.agency_id == "some agency_id"
+      assert bank_account.is_active == true
+      assert bank_account.since == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+      assert bank_account.until == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+    end
+
+    test "create_bank_account/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Agencies.create_bank_account(@invalid_attrs)
+    end
+
+    test "update_bank_account/2 with valid data updates the bank_account" do
+      bank_account = bank_account_fixture()
+      assert {:ok, %BankAccount{} = bank_account} = Agencies.update_bank_account(bank_account, @update_attrs)
+      assert bank_account.agency_id == "some updated agency_id"
+      assert bank_account.is_active == false
+      assert bank_account.since == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+      assert bank_account.until == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+    end
+
+    test "update_bank_account/2 with invalid data returns error changeset" do
+      bank_account = bank_account_fixture()
+      assert {:error, %Ecto.Changeset{}} = Agencies.update_bank_account(bank_account, @invalid_attrs)
+      assert bank_account == Agencies.get_bank_account!(bank_account.id)
+    end
+
+    test "delete_bank_account/1 deletes the bank_account" do
+      bank_account = bank_account_fixture()
+      assert {:ok, %BankAccount{}} = Agencies.delete_bank_account(bank_account)
+      assert_raise Ecto.NoResultsError, fn -> Agencies.get_bank_account!(bank_account.id) end
+    end
+
+    test "change_bank_account/1 returns a bank_account changeset" do
+      bank_account = bank_account_fixture()
+      assert %Ecto.Changeset{} = Agencies.change_bank_account(bank_account)
+    end
+  end
 end

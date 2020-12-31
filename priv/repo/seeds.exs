@@ -60,3 +60,11 @@ App.Agencies.create_agency_user(%{
   since: DateTime.utc_now,
   until: nil
 })
+
+# Seed Agency Bank Account
+{:ok, %App.Agencies.BankAccount{id: bank_account_id}} = App.Agencies.create_bank_account(%{
+  agency_id: agency_id,
+  code: 1,
+  is_active: true,
+  since: DateTime.utc_now,
+})
