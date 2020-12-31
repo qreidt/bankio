@@ -8,7 +8,9 @@ defmodule AppWeb.UserView do
       name: user.name,
       key: user.key,
       type: user.type,
-      is_active: user.is_active
+      is_active: user.is_active,
+      inserted_at: user.inserted_at,
+      updated_at: user.updated_at
     }
   end
 

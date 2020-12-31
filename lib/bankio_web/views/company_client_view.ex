@@ -7,7 +7,9 @@ defmodule AppWeb.CompanyClientView do
       company_id: company_client.company_id,
       client_id: company_client.client_id,
       since: company_client.since,
-      until: company_client.until
+      until: company_client.until,
+      inserted_at: company_client.inserted_at,
+      updated_at: company_client.updated_at
     }
   end
 
@@ -40,7 +42,8 @@ defmodule AppWeb.CompanyClientView do
   end
 
   def render("company_client.json", %{company_client: company_client}) do
-    company_client(company_client)
+    company_client
+    |> company_client
     |> client(company_client.client)
     |> company(company_client.company)
   end

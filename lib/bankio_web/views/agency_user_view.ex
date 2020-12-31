@@ -8,7 +8,9 @@ defmodule AppWeb.AgencyUserView do
       agency_id: agency_user.agency_id,
       role: agency_user.role,
       since: agency_user.since,
-      until: agency_user.until
+      until: agency_user.until,
+      inserted_at: agency_user.inserted_at,
+      updated_at: agency_user.updated_at
     }
   end
 

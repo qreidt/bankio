@@ -31,7 +31,9 @@ defmodule AppWeb.ClientView do
       id: client.id,
       name: client.name,
       key: client.key,
-      is_active: client.is_active
+      is_active: client.is_active,
+      inserted_at: client.inserted_at,
+      updated_at: client.updated_at
     }
     |> companies(client.companies)
   end

@@ -7,7 +7,9 @@ defmodule AppWeb.AgencyView do
       id: agency.id,
       code: agency.code,
       name: agency.name,
-      is_active: agency.is_active
+      is_active: agency.is_active,
+      inserted_at: agency.inserted_at,
+      updated_at: agency.updated_at
     }
   end
 

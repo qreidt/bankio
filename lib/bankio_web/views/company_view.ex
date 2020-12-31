@@ -7,7 +7,9 @@ defmodule AppWeb.CompanyView do
       id: company.id,
       name: company.name,
       document: company.document,
-      is_active: company.is_active
+      is_active: company.is_active,
+      inserted_at: company.inserted_at,
+      updated_at: company.updated_at
     }
   end
 
