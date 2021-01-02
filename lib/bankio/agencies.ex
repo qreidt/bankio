@@ -6,7 +6,7 @@ defmodule App.Agencies do
   import Ecto.Query, warn: false
   alias App.Repo
 
-  alias App.Agencies.{Agency, AgencyUser, BankAccount}
+  alias App.Agencies.{Agency, AgencyUser, BankAccount, BankAccountClient}
 
   @doc """
   Returns the list of agencies.
@@ -122,7 +122,11 @@ defmodule App.Agencies do
 
   """
   def get_agency_user!(user_id, agency_id) do
-    Repo.get_by!(AgencyUser, user_id: user_id, agency_id: agency_id)
+    Repo.get_by!(
+      AgencyUser,
+      user_id: user_id,
+      agency_id: agency_id
+    )
   end
 
   @doc """
@@ -157,7 +161,7 @@ defmodule App.Agencies do
   """
   def update_agency_user(%AgencyUser{} = agency_user, attrs) do
     agency_user
-    |> AgencyUser.changeset(attrs)
+    |> AgencyUser.update_changeset(attrs)
     |> Repo.update()
   end
 
@@ -222,6 +226,7 @@ defmodule App.Agencies do
   def get_bank_account!(id, :complete) do
     Repo.get!(BankAccount, id)
     |> Repo.preload(:agency)
+    |> Repo.preload(clients: :client)
   end
 
   @doc """
@@ -287,5 +292,93 @@ defmodule App.Agencies do
   """
   def change_bank_account(%BankAccount{} = bank_account, attrs \\ %{}) do
     BankAccount.changeset(bank_account, attrs)
+  end
+
+
+  @doc """
+  Gets a single bank_account_client.
+
+  Raises `Ecto.NoResultsError` if the Bank account client does not exist.
+
+  ## Examples
+
+      iex> get_bank_account_client!(123)
+      %BankAccountClient{}
+
+      iex> get_bank_account_client!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_bank_account_client!(client_id, bank_account_id) do
+    Repo.get_by!(
+      BankAccountClient,
+      client_id: client_id,
+      bank_account_id: bank_account_id
+    )
+  end
+
+  @doc """
+  Creates a bank_account_client.
+
+  ## Examples
+
+      iex> create_bank_account_client(%{field: value})
+      {:ok, %BankAccountClient{}}
+
+      iex> create_bank_account_client(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_bank_account_client(attrs \\ %{}) do
+    %BankAccountClient{}
+    |> BankAccountClient.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a bank_account_client.
+
+  ## Examples
+
+      iex> update_bank_account_client(bank_account_client, %{field: new_value})
+      {:ok, %BankAccountClient{}}
+
+      iex> update_bank_account_client(bank_account_client, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_bank_account_client(%BankAccountClient{} = bank_account_client, attrs) do
+    bank_account_client
+    |> BankAccountClient.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a bank_account_client.
+
+  ## Examples
+
+      iex> delete_bank_account_client(bank_account_client)
+      {:ok, %BankAccountClient{}}
+
+      iex> delete_bank_account_client(bank_account_client)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_bank_account_client(%BankAccountClient{} = bank_account_client) do
+    Repo.delete(bank_account_client)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking bank_account_client changes.
+
+  ## Examples
+
+      iex> change_bank_account_client(bank_account_client)
+      %Ecto.Changeset{data: %BankAccountClient{}}
+
+  """
+  def change_bank_account_client(%BankAccountClient{} = bank_account_client, attrs \\ %{}) do
+    BankAccountClient.changeset(bank_account_client, attrs)
   end
 end

@@ -15,6 +15,7 @@ defmodule App.Accounts.Client do
 
     has_many :tokens, App.Accounts.ClientToken
     has_many :companies, App.Companies.CompanyClient
+    has_many :bank_accounts, App.Agencies.BankAccountClient
 
     timestamps()
   end

@@ -154,6 +154,7 @@ defmodule App.Accounts do
     base_query
     |> Accounts.preload_companies
     |> Repo.one!
+    |> Repo.preload(bank_accounts: :bank_account)
   end
 
   def preload_companies(query) do

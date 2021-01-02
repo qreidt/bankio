@@ -38,6 +38,11 @@ defmodule AppWeb.Router do
 
 		resources "/bank-accounts", BankAccountController, except: [:new, :edit]
 
+		# Recurso para Clientes de Contas Bancárias
+		post "/bank-account-clients", BankAccountClientController, :create
+		patch "/bank-account-clients/:bank_account_id/:client_id", BankAccountClientController, :update
+		delete "/bank-account-clients/:bank_account_id/:client_id", BankAccountClientController, :delete
+
 	end
 
 	scope "/user", AppWeb do

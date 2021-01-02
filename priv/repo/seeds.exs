@@ -20,29 +20,29 @@
 })
 
 
-# # Seed Client User
-# {:ok, %App.Accounts.Client{id: client_id}} = App.Accounts.create_client(%{
-#   key: "461.700.428-93",
-#   name: "Caio Quincoses Reidt",
-#   password: "Ab1234567890",
-#   is_active: true
-# })
-#
-#
-# # Seed Company
-# {:ok, %App.Companies.Company{id: company_id}} = App.Companies.create_company(%{
-#   name: "Garnon Soluções e Serviços Em Tecnologia Ltda.",
-#   document: "26.003.654/0001-62",
-#   is_active: true
-# })
-#
-# # Add Client to Company
-# App.Companies.create_company_client(%{
-#   company_id: company_id,
-#   client_id: client_id,
-#   since: DateTime.utc_now,
-#   until: nil
-# })
+# Seed Client User
+{:ok, %App.Accounts.Client{id: client_id}} = App.Accounts.create_client(%{
+  key: "461.700.428-93",
+  name: "Caio Quincoses Reidt",
+  password: "Ab1234567890",
+  is_active: true
+})
+
+
+# Seed Company
+{:ok, %App.Companies.Company{id: company_id}} = App.Companies.create_company(%{
+  name: "Garnon Soluções e Serviços Em Tecnologia Ltda.",
+  document: "26.003.654/0001-62",
+  is_active: true
+})
+
+# Add Client to Company
+App.Companies.create_company_client(%{
+  company_id: company_id,
+  client_id: client_id,
+  since: DateTime.utc_now,
+  until: nil
+})
 
 
 # Seed Agency
@@ -61,10 +61,17 @@ App.Agencies.create_agency_user(%{
   until: nil
 })
 
-# Seed Agency Bank Account
+# Seed Bank Account
 {:ok, %App.Agencies.BankAccount{id: bank_account_id}} = App.Agencies.create_bank_account(%{
   agency_id: agency_id,
   code: 1,
   is_active: true,
+  since: DateTime.utc_now,
+})
+
+# Seed Bank Account Client
+App.Agencies.create_bank_account_client(%{
+  client_id: client_id,
+  bank_account_id: bank_account_id,
   since: DateTime.utc_now,
 })

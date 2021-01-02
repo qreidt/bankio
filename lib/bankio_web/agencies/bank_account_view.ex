@@ -25,6 +25,21 @@ defmodule AppWeb.BankAccountView do
     end
   end
 
+  def clients(bank_account, bank_account_clients) do
+    if is_list(bank_account_clients) do
+      Map.put(
+        bank_account,
+        :clients,
+        render_many(bank_account_clients, AppWeb.BankAccountClientView, "bank_account-client.json")
+      )
+
+    else
+
+      bank_account
+
+    end
+  end
+
   def render("index.json", %{bank_accounts: bank_accounts}) do
     render_many(bank_accounts, BankAccountView, "bank_account.json")
   end
@@ -37,5 +52,6 @@ defmodule AppWeb.BankAccountView do
     bank_account
     |> bank_account
     |> agency(bank_account.agency)
+    |> clients(bank_account.clients)
   end
 end

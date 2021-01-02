@@ -7,6 +7,7 @@ defmodule App.Repo.Migrations.CreateCompanyClients do
       add :client_id, references(:clients, on_delete: :delete_all, type: :binary_id), primary_key: true
       add :since, :utc_datetime, null: false
       add :until, :utc_datetime
+      
       timestamps type: :utc_datetime
     end
 

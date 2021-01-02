@@ -11,6 +11,7 @@ defmodule App.Agencies.BankAccount do
     field :until, :utc_datetime
 
     belongs_to :agency, App.Agencies.Agency, define_field: :agency_id
+    has_many :clients, App.Agencies.BankAccountClient
 
     timestamps()
   end

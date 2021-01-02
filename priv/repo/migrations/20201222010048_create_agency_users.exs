@@ -8,6 +8,7 @@ defmodule App.Repo.Migrations.CreateAgencyUsers do
       add :role, :string, null: false
       add :since, :utc_datetime, null: false
       add :until, :utc_datetime
+      
       timestamps type: :utc_datetime
     end
 

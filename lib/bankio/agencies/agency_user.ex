@@ -29,7 +29,7 @@ defmodule App.Agencies.AgencyUser do
   @doc false
   def update_changeset(agency_user, attrs) do
     agency_user
-    |> cast(attrs, [:user_id, :agency_id, :role, :since, :until])
+    |> cast(attrs, [:role, :since, :until])
     |> validate_required([:role, :since])
   end
 end

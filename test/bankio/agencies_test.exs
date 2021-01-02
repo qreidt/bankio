@@ -197,4 +197,69 @@ defmodule App.AgenciesTest do
       assert %Ecto.Changeset{} = Agencies.change_bank_account(bank_account)
     end
   end
+
+  describe "bank_account_client" do
+    alias App.Agencies.BankAccountClient
+
+    @valid_attrs %{bank_account_id: "some bank_account_id", client_id: "some client_id", since: "2010-04-17T14:00:00Z", until: "2010-04-17T14:00:00Z"}
+    @update_attrs %{bank_account_id: "some updated bank_account_id", client_id: "some updated client_id", since: "2011-05-18T15:01:01Z", until: "2011-05-18T15:01:01Z"}
+    @invalid_attrs %{bank_account_id: nil, client_id: nil, since: nil, until: nil}
+
+    def bank_account_client_fixture(attrs \\ %{}) do
+      {:ok, bank_account_client} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Agencies.create_bank_account_client()
+
+      bank_account_client
+    end
+
+    test "list_bank_account_client/0 returns all bank_account_client" do
+      bank_account_client = bank_account_client_fixture()
+      assert Agencies.list_bank_account_client() == [bank_account_client]
+    end
+
+    test "get_bank_account_client!/1 returns the bank_account_client with given id" do
+      bank_account_client = bank_account_client_fixture()
+      assert Agencies.get_bank_account_client!(bank_account_client.id) == bank_account_client
+    end
+
+    test "create_bank_account_client/1 with valid data creates a bank_account_client" do
+      assert {:ok, %BankAccountClient{} = bank_account_client} = Agencies.create_bank_account_client(@valid_attrs)
+      assert bank_account_client.bank_account_id == "some bank_account_id"
+      assert bank_account_client.client_id == "some client_id"
+      assert bank_account_client.since == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+      assert bank_account_client.until == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+    end
+
+    test "create_bank_account_client/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Agencies.create_bank_account_client(@invalid_attrs)
+    end
+
+    test "update_bank_account_client/2 with valid data updates the bank_account_client" do
+      bank_account_client = bank_account_client_fixture()
+      assert {:ok, %BankAccountClient{} = bank_account_client} = Agencies.update_bank_account_client(bank_account_client, @update_attrs)
+      assert bank_account_client.bank_account_id == "some updated bank_account_id"
+      assert bank_account_client.client_id == "some updated client_id"
+      assert bank_account_client.since == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+      assert bank_account_client.until == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+    end
+
+    test "update_bank_account_client/2 with invalid data returns error changeset" do
+      bank_account_client = bank_account_client_fixture()
+      assert {:error, %Ecto.Changeset{}} = Agencies.update_bank_account_client(bank_account_client, @invalid_attrs)
+      assert bank_account_client == Agencies.get_bank_account_client!(bank_account_client.id)
+    end
+
+    test "delete_bank_account_client/1 deletes the bank_account_client" do
+      bank_account_client = bank_account_client_fixture()
+      assert {:ok, %BankAccountClient{}} = Agencies.delete_bank_account_client(bank_account_client)
+      assert_raise Ecto.NoResultsError, fn -> Agencies.get_bank_account_client!(bank_account_client.id) end
+    end
+
+    test "change_bank_account_client/1 returns a bank_account_client changeset" do
+      bank_account_client = bank_account_client_fixture()
+      assert %Ecto.Changeset{} = Agencies.change_bank_account_client(bank_account_client)
+    end
+  end
 end

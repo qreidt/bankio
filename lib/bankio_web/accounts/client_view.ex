@@ -3,12 +3,26 @@ defmodule AppWeb.ClientView do
   alias AppWeb.ClientView
 
   def companies(client, client_companies) do
-
     if is_list(client_companies) do
       Map.put(
         client,
         :companies,
         render_many(client_companies, AppWeb.CompanyClientView, "company_client.json")
+      )
+
+    else
+
+      client
+
+    end
+  end
+
+  def bank_accounts(client, bank_account_clients) do
+    if is_list(bank_account_clients) do
+      Map.put(
+        client,
+        :bank_accounts,
+        render_many(bank_account_clients, AppWeb.BankAccountClientView, "bank_account-client.json")
       )
 
     else
@@ -27,6 +41,7 @@ defmodule AppWeb.ClientView do
   end
 
   def render("client.json", %{client: client}) do
+    IO.inspect(client)
     %{
       id: client.id,
       name: client.name,
@@ -36,5 +51,6 @@ defmodule AppWeb.ClientView do
       updated_at: client.updated_at
     }
     |> companies(client.companies)
+    |> bank_accounts(client.bank_accounts)
   end
 end

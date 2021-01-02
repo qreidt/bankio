@@ -10,7 +10,7 @@ defmodule App.Repo.Migrations.CreateBankAccounts do
       add :since, :utc_datetime, null: false
       add :until, :utc_datetime
 
-      timestamps()
+      timestamps type: :utc_datetime
     end
 
     create unique_index(:bank_accounts, [:code])
