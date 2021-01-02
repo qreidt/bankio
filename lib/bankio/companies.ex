@@ -9,6 +9,13 @@ defmodule App.Companies do
   alias App.Companies
   alias App.Companies.{Company, CompanyClient}
 
+
+  #############################
+  #
+  # Company
+  #
+  #############################
+
   @doc """
   Returns the list of companies.
 
@@ -38,18 +45,10 @@ defmodule App.Companies do
   """
   def get_company!(id), do: Repo.get!(Company, id)
   def get_company!(id, :complete) do
-    base_query = from company in Company, where: company.id == ^id
 
-    base_query
-    |> Companies.preload_clients
-    |> Repo.one!
-  end
+    Repo.get!(Company, id)
+    |> Repo.preload(members: :client)
 
-  def preload_clients(query) do
-    from company in query,
-      left_join: member in assoc(company, :members),
-      left_join: client in assoc(member, :client),
-      preload: [members: {member, client: client}]
   end
 
   @doc """
@@ -117,6 +116,12 @@ defmodule App.Companies do
     Company.changeset(company, attrs)
   end
 
+
+  #############################
+  #
+  # Company Client
+  #
+  #############################
 
 
   @doc """

@@ -8,6 +8,13 @@ defmodule App.Agencies do
 
   alias App.Agencies.{Agency, AgencyUser, BankAccount, BankAccountClient}
 
+
+  #############################
+  #
+  # Agency
+  #
+  #############################
+
   @doc """
   Returns the list of agencies.
 
@@ -107,6 +114,13 @@ defmodule App.Agencies do
     Agency.changeset(agency, attrs)
   end
 
+
+  #############################
+  #
+  # User Agency
+  #
+  #############################
+
   @doc """
   Gets a single agency_user.
 
@@ -193,6 +207,13 @@ defmodule App.Agencies do
   def change_agency_user(%AgencyUser{} = agency_user, attrs \\ %{}) do
     AgencyUser.changeset(agency_user, attrs)
   end
+
+
+  #############################
+  #
+  # Bank Account
+  #
+  #############################
 
   @doc """
   Returns the list of bank_accounts.
@@ -293,6 +314,13 @@ defmodule App.Agencies do
   def change_bank_account(%BankAccount{} = bank_account, attrs \\ %{}) do
     BankAccount.changeset(bank_account, attrs)
   end
+
+
+  #############################
+  #
+  # Bank Account Client
+  #
+  #############################
 
 
   @doc """

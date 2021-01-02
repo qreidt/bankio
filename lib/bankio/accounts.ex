@@ -46,18 +46,10 @@ defmodule App.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
   def get_user!(id, :complete) do
-    base_query = from user in User, where: user.id == ^id
 
-    base_query
-    |> Accounts.preload_agencies
-    |> Repo.one!
-  end
+    Repo.get!(User, id)
+    |> Repo.preload(agencies: :agency)
 
-  def preload_agencies(query) do
-    from user in query,
-      left_join: agency_user in assoc(user, :agencies),
-      left_join: agency in assoc(agency_user, :agency),
-      preload: [agencies: {agency_user, agency: agency}]
   end
 
   @doc """
@@ -149,19 +141,9 @@ defmodule App.Accounts do
   """
   def get_client!(id), do: Repo.get!(Client, id)
   def get_client!(id, :complete) do
-    base_query = from client in Client, where: client.id == ^id
-
-    base_query
-    |> Accounts.preload_companies
-    |> Repo.one!
+    Repo.get!(Client, id)
+    |> Repo.preload(companies: :company)
     |> Repo.preload(bank_accounts: :bank_account)
-  end
-
-  def preload_companies(query) do
-    from client in query,
-      left_join: c in assoc(client, :companies),
-      left_join: company in assoc(c, :company),
-      preload: [companies: {c, company: company}]
   end
 
   @doc """
