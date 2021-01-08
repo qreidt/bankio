@@ -43,6 +43,8 @@ defmodule AppWeb.Router do
 		patch "/bank-account-clients/:bank_account_id/:client_id", BankAccountClientController, :update
 		delete "/bank-account-clients/:bank_account_id/:client_id", BankAccountClientController, :delete
 
+		resources "/cards", CardController, except: [:new, :edit]
+
 	end
 
 	scope "/user", AppWeb do

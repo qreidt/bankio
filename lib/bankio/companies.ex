@@ -6,7 +6,6 @@ defmodule App.Companies do
   import Ecto.Query, warn: false
   alias App.Repo
 
-  alias App.Companies
   alias App.Companies.{Company, CompanyClient}
 
 

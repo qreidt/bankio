@@ -75,3 +75,12 @@ App.Agencies.create_bank_account_client(%{
   bank_account_id: bank_account_id,
   since: DateTime.utc_now,
 })
+
+# Seed Bank Account Card
+{:ok, %App.Cards.Card{id: _card_id}} = App.Cards.create_card(%{
+  bank_account_id: bank_account_id,
+  code: 1,
+  password: "1234",
+  balance: 100.12345,
+  is_active: true
+})
