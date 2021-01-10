@@ -5,13 +5,13 @@ defmodule App.Repo.Migrations.CreateCreditInvoices do
     create table(:credit_invoices, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :card_id, references(:cards, on_delete: :delete_all, type: :binary_id), null: false
-      add :balance, :decimal, null: false
+      add :balance, :decimal, null: false, precision: 18, scale: 5
       add :reference_month, :string, null: false
       add :status, :integer, null: false
       add :started, :utc_datetime, null: false
       add :ended, :utc_datetime, null: false
       add :paid_at, :utc_datetime
-      add :interest, :decimal, null: false
+      add :interest, :decimal, null: false, precision: 18, scale: 5
 
       timestamps type: :utc_datetime
     end

@@ -45,6 +45,7 @@ defmodule AppWeb.Router do
 
 		resources "/cards", CardController, except: [:new, :edit]
 		resources "/credit-invoices", CreditInvoiceController, except: [:new, :edit]
+		resources "/transactions", TransactionController, except: [:new, :edit]
 
 	end
 

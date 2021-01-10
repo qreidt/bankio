@@ -95,12 +95,35 @@ App.Agencies.create_bank_account_client(%{
 })
 
 # Seed Credit Invoice
-App.Cards.create_credit_invoice(%{
+{:ok, %App.Cards.CreditInvoice{id: credit_invoice_id}} = App.Cards.create_credit_invoice(%{
   card_id: card_id,
 	balance: 100,
 	reference_month: "2021-02",
 	status: 1,
 	started: "2021-02-01T00:00:00.000Z",
-	ended: "2021-02-28T00:00:00.000",
+	ended: "2021-02-28T00:00:00.000Z",
 	interest: 0
+})
+
+# Seed Normal Transaction
+App.Cards.create_transaction(%{
+  card_id: card_id,
+  value: 100.999,
+  executed: true
+})
+
+# Seed Credit Transaction
+App.Cards.create_transaction(%{
+  card_id: card_id,
+  credit_invoice_id: credit_invoice_id,
+  value: 100.999,
+  executed: true
+})
+
+# Seed Scheduled Transaction
+App.Cards.create_transaction(%{
+  card_id: card_id,
+  value: 100.999,
+  executed: false,
+  execute_at: "2021-02-12T09:30:00.000Z"
 })

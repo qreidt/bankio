@@ -27,14 +27,14 @@ defmodule AppWeb.CreditInvoiceView do
   end
 
   def render("index.json", %{credit_invoices: credit_invoices}) do
-    render_many(credit_invoices, CreditInvoiceView, "credit_invoice.json")
+    render_many(credit_invoices, CreditInvoiceView, "credit-invoice.json")
   end
 
   def render("show.json", %{credit_invoice: credit_invoice}) do
-    render_one(credit_invoice, CreditInvoiceView, "credit_invoice.json")
+    render_one(credit_invoice, CreditInvoiceView, "credit-invoice.json")
   end
 
-  def render("credit_invoice.json", %{credit_invoice: credit_invoice}) do
+  def render("credit-invoice.json", %{credit_invoice: credit_invoice}) do
     credit_invoice
     |> credit_invoice
     |> card(credit_invoice.card)

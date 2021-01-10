@@ -142,4 +142,71 @@ defmodule App.CardsTest do
       assert %Ecto.Changeset{} = Cards.change_credit_invoice(credit_invoice)
     end
   end
+
+  describe "transactions" do
+    alias App.Cards.Transaction
+
+    @valid_attrs %{card_id: "some card_id", credit_invoice_id: "some credit_invoice_id", execute_at: "2010-04-17T14:00:00Z", executed: true, value: "120.5"}
+    @update_attrs %{card_id: "some updated card_id", credit_invoice_id: "some updated credit_invoice_id", execute_at: "2011-05-18T15:01:01Z", executed: false, value: "456.7"}
+    @invalid_attrs %{card_id: nil, credit_invoice_id: nil, execute_at: nil, executed: nil, value: nil}
+
+    def transaction_fixture(attrs \\ %{}) do
+      {:ok, transaction} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Cards.create_transaction()
+
+      transaction
+    end
+
+    test "list_transactions/0 returns all transactions" do
+      transaction = transaction_fixture()
+      assert Cards.list_transactions() == [transaction]
+    end
+
+    test "get_transaction!/1 returns the transaction with given id" do
+      transaction = transaction_fixture()
+      assert Cards.get_transaction!(transaction.id) == transaction
+    end
+
+    test "create_transaction/1 with valid data creates a transaction" do
+      assert {:ok, %Transaction{} = transaction} = Cards.create_transaction(@valid_attrs)
+      assert transaction.card_id == "some card_id"
+      assert transaction.credit_invoice_id == "some credit_invoice_id"
+      assert transaction.execute_at == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+      assert transaction.executed == true
+      assert transaction.value == Decimal.new("120.5")
+    end
+
+    test "create_transaction/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Cards.create_transaction(@invalid_attrs)
+    end
+
+    test "update_transaction/2 with valid data updates the transaction" do
+      transaction = transaction_fixture()
+      assert {:ok, %Transaction{} = transaction} = Cards.update_transaction(transaction, @update_attrs)
+      assert transaction.card_id == "some updated card_id"
+      assert transaction.credit_invoice_id == "some updated credit_invoice_id"
+      assert transaction.execute_at == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+      assert transaction.executed == false
+      assert transaction.value == Decimal.new("456.7")
+    end
+
+    test "update_transaction/2 with invalid data returns error changeset" do
+      transaction = transaction_fixture()
+      assert {:error, %Ecto.Changeset{}} = Cards.update_transaction(transaction, @invalid_attrs)
+      assert transaction == Cards.get_transaction!(transaction.id)
+    end
+
+    test "delete_transaction/1 deletes the transaction" do
+      transaction = transaction_fixture()
+      assert {:ok, %Transaction{}} = Cards.delete_transaction(transaction)
+      assert_raise Ecto.NoResultsError, fn -> Cards.get_transaction!(transaction.id) end
+    end
+
+    test "change_transaction/1 returns a transaction changeset" do
+      transaction = transaction_fixture()
+      assert %Ecto.Changeset{} = Cards.change_transaction(transaction)
+    end
+  end
 end
