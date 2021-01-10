@@ -87,9 +87,20 @@ App.Agencies.create_bank_account_client(%{
 })
 
 # Seed Bank Account Card
-{:ok, %App.Cards.Card{id: _card_id}} = App.Cards.create_card(%{
+{:ok, %App.Cards.Card{id: card_id}} = App.Cards.create_card(%{
   bank_account_id: bank_account_id,
   code: 1,
   password: "1234",
   is_active: true
+})
+
+# Seed Credit Invoice
+App.Cards.create_credit_invoice(%{
+  card_id: card_id,
+	balance: 100,
+	reference_month: "2021-02",
+	status: 1,
+	started: "2021-02-01T00:00:00.000Z",
+	ended: "2021-02-28T00:00:00.000",
+	interest: 0
 })

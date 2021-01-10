@@ -11,7 +11,8 @@ defmodule App.Cards.Card do
     field :code, :integer
     field :is_active, :boolean, default: false
 
-    belongs_to :bank_account, App.Agencies.Agency, define_field: :bank_account_id
+    belongs_to :bank_account, App.Agencies.BankAccount, define_field: :bank_account_id
+    has_many :cards, App.Cards.CreditInvoice
 
     timestamps()
   end

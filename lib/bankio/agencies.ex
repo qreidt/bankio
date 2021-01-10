@@ -378,7 +378,7 @@ defmodule App.Agencies do
   """
   def update_bank_account_client(%BankAccountClient{} = bank_account_client, attrs) do
     bank_account_client
-    |> BankAccountClient.changeset(attrs)
+    |> BankAccountClient.update_changeset(attrs)
     |> Repo.update()
   end
 

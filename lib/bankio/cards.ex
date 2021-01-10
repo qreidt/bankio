@@ -39,6 +39,7 @@ defmodule App.Cards do
   def get_card!(id, :complete) do
     Repo.get!(Card, id)
     |> Repo.preload(:bank_account)
+    |> IO.inspect
   end
 
   @doc """
@@ -104,5 +105,109 @@ defmodule App.Cards do
   """
   def change_card(%Card{} = card, attrs \\ %{}) do
     Card.changeset(card, attrs)
+  end
+
+  alias App.Cards.CreditInvoice
+
+  @doc """
+  Returns the list of credit_invoices.
+
+  ## Examples
+
+      iex> list_credit_invoices()
+      [%CreditInvoice{}, ...]
+
+  """
+  def list_credit_invoices, do: Repo.all(CreditInvoice)
+  def list_credit_invoices(card_id) do
+    Repo.all(
+      from credit_invoice in CreditInvoice,
+      where: credit_invoice.card_id == ^card_id
+    )
+  end
+
+  @doc """
+  Gets a single credit_invoice.
+
+  Raises `Ecto.NoResultsError` if the Credit invoice does not exist.
+
+  ## Examples
+
+      iex> get_credit_invoice!(123)
+      %CreditInvoice{}
+
+      iex> get_credit_invoice!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_credit_invoice!(id), do: Repo.get!(CreditInvoice, id)
+  def get_credit_invoice!(id, :complete) do
+    Repo.get!(CreditInvoice, id)
+    |> Repo.preload(:card)
+  end
+
+  @doc """
+  Creates a credit_invoice.
+
+  ## Examples
+
+      iex> create_credit_invoice(%{field: value})
+      {:ok, %CreditInvoice{}}
+
+      iex> create_credit_invoice(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_credit_invoice(attrs \\ %{}) do
+    %CreditInvoice{}
+    |> CreditInvoice.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a credit_invoice.
+
+  ## Examples
+
+      iex> update_credit_invoice(credit_invoice, %{field: new_value})
+      {:ok, %CreditInvoice{}}
+
+      iex> update_credit_invoice(credit_invoice, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_credit_invoice(%CreditInvoice{} = credit_invoice, attrs) do
+    credit_invoice
+    |> CreditInvoice.update_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a credit_invoice.
+
+  ## Examples
+
+      iex> delete_credit_invoice(credit_invoice)
+      {:ok, %CreditInvoice{}}
+
+      iex> delete_credit_invoice(credit_invoice)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_credit_invoice(%CreditInvoice{} = credit_invoice) do
+    Repo.delete(credit_invoice)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking credit_invoice changes.
+
+  ## Examples
+
+      iex> change_credit_invoice(credit_invoice)
+      %Ecto.Changeset{data: %CreditInvoice{}}
+
+  """
+  def change_credit_invoice(%CreditInvoice{} = credit_invoice, attrs \\ %{}) do
+    CreditInvoice.changeset(credit_invoice, attrs)
   end
 end

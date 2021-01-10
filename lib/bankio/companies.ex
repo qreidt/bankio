@@ -173,7 +173,7 @@ defmodule App.Companies do
   """
   def update_company_client(%CompanyClient{} = company_client, attrs \\ %{}) do
     company_client
-    |> CompanyClient.changeset(attrs)
+    |> CompanyClient.update_changeset(attrs)
     |> Repo.update()
   end
 

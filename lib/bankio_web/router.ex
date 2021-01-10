@@ -44,6 +44,7 @@ defmodule AppWeb.Router do
 		delete "/bank-account-clients/:bank_account_id/:client_id", BankAccountClientController, :delete
 
 		resources "/cards", CardController, except: [:new, :edit]
+		resources "/credit-invoices", CreditInvoiceController, except: [:new, :edit]
 
 	end
 

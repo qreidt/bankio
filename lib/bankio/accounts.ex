@@ -84,7 +84,7 @@ defmodule App.Accounts do
   """
   def update_user(%User{} = user, attrs) do
     user
-    |> User.changeset(attrs)
+    |> User.update_changeset(attrs)
     |> Repo.update()
   end
 
@@ -178,7 +178,7 @@ defmodule App.Accounts do
   """
   def update_client(%Client{} = client, attrs) do
     client
-    |> Client.changeset(attrs)
+    |> Client.update_changeset(attrs)
     |> Repo.update()
   end
 

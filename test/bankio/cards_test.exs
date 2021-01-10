@@ -69,4 +69,77 @@ defmodule App.CardsTest do
       assert %Ecto.Changeset{} = Cards.change_card(card)
     end
   end
+
+  describe "credit_invoices" do
+    alias App.Cards.CreditInvoice
+
+    @valid_attrs %{balance: "120.5", card_id: "some card_id", ended: "2010-04-17T14:00:00Z", interest: "120.5", paid_at: "2010-04-17T14:00:00Z", reference_month: ~D[2010-04-17], started: "2010-04-17T14:00:00Z", status: 42}
+    @update_attrs %{balance: "456.7", card_id: "some updated card_id", ended: "2011-05-18T15:01:01Z", interest: "456.7", paid_at: "2011-05-18T15:01:01Z", reference_month: ~D[2011-05-18], started: "2011-05-18T15:01:01Z", status: 43}
+    @invalid_attrs %{balance: nil, card_id: nil, ended: nil, interest: nil, paid_at: nil, reference_month: nil, started: nil, status: nil}
+
+    def credit_invoice_fixture(attrs \\ %{}) do
+      {:ok, credit_invoice} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Cards.create_credit_invoice()
+
+      credit_invoice
+    end
+
+    test "list_credit_invoices/0 returns all credit_invoices" do
+      credit_invoice = credit_invoice_fixture()
+      assert Cards.list_credit_invoices() == [credit_invoice]
+    end
+
+    test "get_credit_invoice!/1 returns the credit_invoice with given id" do
+      credit_invoice = credit_invoice_fixture()
+      assert Cards.get_credit_invoice!(credit_invoice.id) == credit_invoice
+    end
+
+    test "create_credit_invoice/1 with valid data creates a credit_invoice" do
+      assert {:ok, %CreditInvoice{} = credit_invoice} = Cards.create_credit_invoice(@valid_attrs)
+      assert credit_invoice.balance == Decimal.new("120.5")
+      assert credit_invoice.card_id == "some card_id"
+      assert credit_invoice.ended == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+      assert credit_invoice.interest == Decimal.new("120.5")
+      assert credit_invoice.paid_at == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+      assert credit_invoice.reference_month == ~D[2010-04-17]
+      assert credit_invoice.started == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+      assert credit_invoice.status == 42
+    end
+
+    test "create_credit_invoice/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Cards.create_credit_invoice(@invalid_attrs)
+    end
+
+    test "update_credit_invoice/2 with valid data updates the credit_invoice" do
+      credit_invoice = credit_invoice_fixture()
+      assert {:ok, %CreditInvoice{} = credit_invoice} = Cards.update_credit_invoice(credit_invoice, @update_attrs)
+      assert credit_invoice.balance == Decimal.new("456.7")
+      assert credit_invoice.card_id == "some updated card_id"
+      assert credit_invoice.ended == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+      assert credit_invoice.interest == Decimal.new("456.7")
+      assert credit_invoice.paid_at == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+      assert credit_invoice.reference_month == ~D[2011-05-18]
+      assert credit_invoice.started == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+      assert credit_invoice.status == 43
+    end
+
+    test "update_credit_invoice/2 with invalid data returns error changeset" do
+      credit_invoice = credit_invoice_fixture()
+      assert {:error, %Ecto.Changeset{}} = Cards.update_credit_invoice(credit_invoice, @invalid_attrs)
+      assert credit_invoice == Cards.get_credit_invoice!(credit_invoice.id)
+    end
+
+    test "delete_credit_invoice/1 deletes the credit_invoice" do
+      credit_invoice = credit_invoice_fixture()
+      assert {:ok, %CreditInvoice{}} = Cards.delete_credit_invoice(credit_invoice)
+      assert_raise Ecto.NoResultsError, fn -> Cards.get_credit_invoice!(credit_invoice.id) end
+    end
+
+    test "change_credit_invoice/1 returns a credit_invoice changeset" do
+      credit_invoice = credit_invoice_fixture()
+      assert %Ecto.Changeset{} = Cards.change_credit_invoice(credit_invoice)
+    end
+  end
 end
