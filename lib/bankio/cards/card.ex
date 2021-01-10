@@ -2,11 +2,12 @@ defmodule App.Cards.Card do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias App.Repo
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "cards" do
     field :password, :string
-    # field :balance, :decimal
     field :code, :integer
     field :is_active, :boolean, default: false
 

@@ -41,7 +41,6 @@ defmodule AppWeb.ClientView do
   end
 
   def render("client.json", %{client: client}) do
-    IO.inspect(client)
     %{
       id: client.id,
       name: client.name,

@@ -19,6 +19,14 @@
   is_active: true
 })
 
+# Seed User Token
+App.Repo.insert!(%App.Accounts.UserToken{
+  user_id: user_id,
+  revoked: false,
+  inserted_at: DateTime.utc_now |> DateTime.truncate(:second),
+  id: "49f19306-f352-4477-994e-2b58fd1a1a3c"
+})
+
 
 # Seed Client User
 {:ok, %App.Accounts.Client{id: client_id}} = App.Accounts.create_client(%{
@@ -66,6 +74,8 @@ App.Agencies.create_agency_user(%{
   agency_id: agency_id,
   code: 1,
   is_active: true,
+  balance: 98765.4321,
+  credit: 3400,
   since: DateTime.utc_now,
 })
 
@@ -81,6 +91,5 @@ App.Agencies.create_bank_account_client(%{
   bank_account_id: bank_account_id,
   code: 1,
   password: "1234",
-  balance: 100.12345,
   is_active: true
 })

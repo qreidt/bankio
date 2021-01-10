@@ -7,6 +7,8 @@ defmodule App.Repo.Migrations.CreateBankAccounts do
       add :agency_id, references(:agencies, on_delete: :delete_all, type: :binary_id), null: false
       add :code, :integer, null: false
       add :is_active, :boolean, default: false, null: false
+      add :balance, :decimal, null: false, precision: 18, scale: 5
+      add :credit, :decimal, null: false, precision: 18, scale: 5
       add :since, :utc_datetime, null: false
       add :until, :utc_datetime
 

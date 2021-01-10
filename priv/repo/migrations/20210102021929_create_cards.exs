@@ -7,7 +7,6 @@ defmodule App.Repo.Migrations.CreateCards do
       add :bank_account_id, references(:bank_accounts, on_delete: :delete_all, type: :binary_id), null: false
       add :code, :integer, null: false
       add :password, :string, null: false
-      # add :balance, :decimal, null: false, precision: 18, scale: 5
       add :is_active, :boolean, default: false, null: false
 
       timestamps type: :utc_datetime

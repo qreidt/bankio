@@ -36,6 +36,10 @@ defmodule App.Cards do
 
   """
   def get_card!(id), do: Repo.get!(Card, id)
+  def get_card!(id, :complete) do
+    Repo.get!(Card, id)
+    |> Repo.preload(:bank_account)
+  end
 
   @doc """
   Creates a card.

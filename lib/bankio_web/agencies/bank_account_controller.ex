@@ -15,7 +15,6 @@ defmodule AppWeb.BankAccountController do
     with {:ok, %BankAccount{} = bank_account} <- Agencies.create_bank_account(params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.bank_account_path(conn, :show, bank_account))
       |> render("show.json", bank_account: bank_account)
     end
   end

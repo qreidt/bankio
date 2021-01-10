@@ -248,6 +248,7 @@ defmodule App.Agencies do
     Repo.get!(BankAccount, id)
     |> Repo.preload(:agency)
     |> Repo.preload(clients: :client)
+    |> Repo.preload(:cards)
   end
 
   @doc """

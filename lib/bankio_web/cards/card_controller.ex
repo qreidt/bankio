@@ -20,7 +20,7 @@ defmodule AppWeb.CardController do
   end
 
   def show(conn, %{"id" => id}) do
-    card = Cards.get_card!(id)
+    card = Cards.get_card!(id, :complete)
     render(conn, "show.json", card: card)
   end
 

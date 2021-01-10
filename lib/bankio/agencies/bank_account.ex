@@ -7,11 +7,14 @@ defmodule App.Agencies.BankAccount do
   schema "bank_accounts" do
     field :code, :integer
     field :is_active, :boolean, default: false
+    field :balance, :decimal
+    field :credit, :decimal
     field :since, :utc_datetime
     field :until, :utc_datetime
 
     belongs_to :agency, App.Agencies.Agency, define_field: :agency_id
     has_many :clients, App.Agencies.BankAccountClient
+    has_many :cards, App.Cards.Card
 
     timestamps()
   end
@@ -19,8 +22,8 @@ defmodule App.Agencies.BankAccount do
   @doc false
   def changeset(bank_account, attrs) do
     bank_account
-    |> cast(attrs, [:agency_id, :code, :is_active, :since, :until])
-    |> validate_required([:agency_id, :code, :is_active, :since])
+    |> cast(attrs, [:agency_id, :code, :is_active, :balance, :credit, :since, :until])
+    |> validate_required([:agency_id, :code, :is_active, :balance, :credit, :since])
     |> unique_constraint(:code)
     |> foreign_key_constraint(:agency_id)
   end
@@ -28,8 +31,9 @@ defmodule App.Agencies.BankAccount do
   @doc false
   def update_changeset(bank_account, attrs) do
     bank_account
-    |> cast(attrs, [:is_active, :code, :since, :until])
-    |> validate_required([:agency_id, :code, :is_active, :since])
+    |> cast(attrs, [:code, :is_active, :balance, :credit, :since, :until])
+    |> validate_required([:agency_id, :code, :is_active, :balance, :credit, :since])
     |> unique_constraint(:code)
+    |> foreign_key_constraint(:agency_id)
   end
 end

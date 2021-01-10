@@ -8,6 +8,8 @@ defmodule AppWeb.BankAccountView do
       agency_id: bank_account.agency_id,
       code: bank_account.code,
       is_active: bank_account.is_active,
+      balance: Decimal.to_float(bank_account.balance),
+      credit: Decimal.to_float(bank_account.credit),
       since: bank_account.since,
       until: bank_account.until,
       inserted_at: bank_account.inserted_at,
@@ -40,6 +42,21 @@ defmodule AppWeb.BankAccountView do
     end
   end
 
+  def cards(bank_account, cards) do
+    if is_list(cards) do
+      Map.put(
+        bank_account,
+        :cards,
+        render_many(cards, AppWeb.CardView, "card.json")
+      )
+
+    else
+
+      bank_account
+
+    end
+  end
+
   def render("index.json", %{bank_accounts: bank_accounts}) do
     render_many(bank_accounts, BankAccountView, "bank_account.json")
   end
@@ -53,5 +70,6 @@ defmodule AppWeb.BankAccountView do
     |> bank_account
     |> agency(bank_account.agency)
     |> clients(bank_account.clients)
+    |> cards(bank_account.cards)
   end
 end

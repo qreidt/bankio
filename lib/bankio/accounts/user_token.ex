@@ -15,7 +15,7 @@ defmodule App.Accounts.UserToken do
 
     belongs_to :user, User
 
-    timestamps(updated_at: false)
+    timestamps(updated_at: false, type: :utc_datetime)
   end
 
   def changeset(%UserToken{} = user_token, attrs) do
