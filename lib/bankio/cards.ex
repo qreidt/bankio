@@ -6,7 +6,8 @@ defmodule App.Cards do
   import Ecto.Query, warn: false
   alias App.Repo
 
-  alias App.Cards.Card
+  alias App.Agencies.BankAccount
+  alias App.Cards.{Card, CreditInvoice, Transaction}
 
   @doc """
   Returns the list of cards.
@@ -107,7 +108,6 @@ defmodule App.Cards do
     Card.changeset(card, attrs)
   end
 
-  alias App.Cards.CreditInvoice
 
   @doc """
   Returns the list of credit_invoices.
@@ -211,7 +211,6 @@ defmodule App.Cards do
     CreditInvoice.changeset(credit_invoice, attrs)
   end
 
-  alias App.Cards.Transaction
 
   @doc """
   Returns the list of transactions.
@@ -278,9 +277,32 @@ defmodule App.Cards do
 
   """
   def update_transaction(%Transaction{} = transaction, attrs) do
-    transaction
-    |> Transaction.changeset(attrs)
-    |> Repo.update()
+    transaction_changeset = transaction
+    |> Transaction.update_changeset(attrs)
+
+    case transaction_changeset do
+      %Ecto.Changeset{valid?: true, changes: %{value: value}} ->
+        %Card{bank_account: bank_account} = Repo.get!(Card, transaction.card_id)
+        |> Repo.preload(:bank_account)
+
+        new_balance =
+          bank_account.balance
+          |> Decimal.add(transaction.value)
+          |> Decimal.sub(Decimal.new(value))
+
+        bank_account_changeset = BankAccount.update_changeset(
+          bank_account,
+          %{balance: new_balance}
+        )
+
+        Repo.transaction(fn ->
+          Repo.update!(bank_account_changeset)
+          Repo.update!(transaction_changeset)
+        end)
+        
+      _ ->
+        Repo.update(transaction_changeset)
+    end
   end
 
   @doc """

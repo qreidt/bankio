@@ -23,4 +23,11 @@ defmodule App.Cards.Transaction do
     |> foreign_key_constraint(:credit_invoice_id)
     |> foreign_key_constraint(:card_id)
   end
+
+  @doc false
+  def update_changeset(transaction, attrs) do
+    transaction
+    |> cast(attrs, [:value, :executed, :execute_at])
+    |> validate_required([:value, :executed])
+  end
 end
