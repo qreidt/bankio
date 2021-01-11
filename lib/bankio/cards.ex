@@ -259,9 +259,34 @@ defmodule App.Cards do
 
   """
   def create_transaction(attrs \\ %{}) do
-    %Transaction{}
+    transaction_changeset = %Transaction{}
     |> Transaction.changeset(attrs)
-    |> Repo.insert()
+
+    case transaction_changeset do
+      # caso os dados enviados não sejam validos
+      %Ecto.Changeset{valid?: false} ->
+        {:error, transaction_changeset}
+
+      # tudo certo
+      _ ->
+        %{
+          card_id: transaction_card_id,
+          value: transaction_value
+        } = transaction_changeset.changes
+
+        %Card{bank_account: bank_account} = Repo.get!(Card, transaction_card_id)
+        |> Repo.preload(:bank_account)
+
+        bank_account_changeset = BankAccount.update_changeset(
+          bank_account,
+          %{balance: Decimal.add(bank_account.balance, transaction_value)}
+        )
+
+        Repo.transaction(fn ->
+          Repo.update!(bank_account_changeset)
+          Repo.insert!(transaction_changeset)
+        end)
+    end
   end
 
   @doc """
@@ -281,6 +306,12 @@ defmodule App.Cards do
     |> Transaction.update_changeset(attrs)
 
     case transaction_changeset do
+      
+      # caso os dados enviados não sejam validos
+      %Ecto.Changeset{valid?: false} ->
+        {:error, transaction_changeset}
+
+      # caso esteja atualizando o valor da transação
       %Ecto.Changeset{valid?: true, changes: %{value: value}} ->
         %Card{bank_account: bank_account} = Repo.get!(Card, transaction.card_id)
         |> Repo.preload(:bank_account)
@@ -299,7 +330,8 @@ defmodule App.Cards do
           Repo.update!(bank_account_changeset)
           Repo.update!(transaction_changeset)
         end)
-        
+
+      # caso esteja atualizando outras informações da transação
       _ ->
         Repo.update(transaction_changeset)
     end
