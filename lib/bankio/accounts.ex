@@ -5,7 +5,6 @@ defmodule App.Accounts do
 
   import Ecto.Query, warn: false
 
-  alias App.Accounts
   alias App.Accounts.{User, Client}
 
   alias App.Repo

@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      .
+    image: bankio
+    container_name: api
+    volumes:
+      - ./:/app
+    ports:
+      - "80:4000"
+      - "443:4001"
+    depends_on:
+      - db
+    networks: 
+      - network
+    environment:
+      - PORT=4000
+      - DATABASE_URL=mysql://phoenix:phoenix@db:3306/phoenix
+      - SECRET_KEY_BASE=YQD2k7GfJ2iot+QVbgYfXZuK8UNN64xsaqKTT4ticW+kWQgllsiuzNbbMLP0LjwW
+      - MIX_ENV=prod
+
+  db:
+    image: mariadb:latest
+    container_name: db
+    ports: 
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: phoenix
+      MYSQL_DATABASE: phoenix
+      MYSQL_USER: phoenix
+      MYSQL_PASSWORD: phoenix
+    restart: always
+    networks: 
+      - network
+
+networks: 
+  network:
+    name: network
+    driver: bridge
